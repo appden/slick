@@ -212,12 +212,18 @@ var slick = (function(){
 	
 	Array.fromNodeList = function(arr){return Array.prototype.slice.call(arr);};
 	try{ Array.prototype.slice.call(document.documentElement.childNodes); }catch(e){
-		Array.fromNodeList = function(arr){return arr;};
+		Array.fromNodeList = function(nodelist) {
+			var arr;
+			for (var i = nodelist.length - 1; i >= 0; i--){
+				arr.unshift(nodelist[i]);
+			}
+			return arr;
+		};
 	};
 	function getByXPATH(context, XPATH_Selector){
 		var THEM = [], item;
 		var xpathResult = document.evaluate(XPATH_Selector, context, null, XPathResult.ANY_TYPE, null);
-		while (item = xpathResult.iterateNext())
+		while ((item = xpathResult.iterateNext()))
 			THEM.push(item);
 		return THEM;
 	}
